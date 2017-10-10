@@ -88,6 +88,7 @@ namespace CorpusSearch
                         log.Info("tx.Commit OK");
 
                         corpus_infos.Add(new_corpus);
+                        SelectedCorpus = new_corpus;
                     }
                 }
             }

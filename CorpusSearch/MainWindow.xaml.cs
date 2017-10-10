@@ -58,6 +58,11 @@ namespace CorpusSearch
                 bool do_index = w.chbIndex.IsChecked.Value;
 
                 ((Corpora_ViewModel)DataContext).AddCorpus(corpus_caption, txt_files, do_index);
+
+                if( do_index)
+                {
+                    btReindexCorpus_Click(sender, e);
+                }
             }
         }
 
