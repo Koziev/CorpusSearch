@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorpusSearch", "CorpusSearch\CorpusSearch.csproj", "{9ECBF58B-DAAF-4B1A-85BE-BCBC62FBE768}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbObjectMappings", "DbObjectMappings\DbObjectMappings.csproj", "{2C7D49C0-6692-40FD-9F12-ED2E360DF478}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextIndex", "FullTextIndex\FullTextIndex.csproj", "{473A37F8-6DA4-4D7C-8F90-BC58C9040458}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9ECBF58B-DAAF-4B1A-85BE-BCBC62FBE768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ECBF58B-DAAF-4B1A-85BE-BCBC62FBE768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ECBF58B-DAAF-4B1A-85BE-BCBC62FBE768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ECBF58B-DAAF-4B1A-85BE-BCBC62FBE768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C7D49C0-6692-40FD-9F12-ED2E360DF478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C7D49C0-6692-40FD-9F12-ED2E360DF478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C7D49C0-6692-40FD-9F12-ED2E360DF478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C7D49C0-6692-40FD-9F12-ED2E360DF478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{473A37F8-6DA4-4D7C-8F90-BC58C9040458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{473A37F8-6DA4-4D7C-8F90-BC58C9040458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{473A37F8-6DA4-4D7C-8F90-BC58C9040458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{473A37F8-6DA4-4D7C-8F90-BC58C9040458}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
