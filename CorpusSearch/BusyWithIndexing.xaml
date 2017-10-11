@@ -5,12 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CorpusSearch"
         mc:Ignorable="d"
-        Height="100" Width="150" WindowStartupLocation="CenterOwner">
+        Height="200" Width="350" WindowStartupLocation="CenterOwner">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="23*"/>
-            <ColumnDefinition Width="49*"/>
-        </Grid.ColumnDefinitions>
-        <Label x:Name="label" Content="Indexing..." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="41,25,41,25.4"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="20*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label x:Name="label" Content="{Binding IndexingProgress}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="41,25,41,25.4"/>
+        <Button x:Name="button" Content="Cancel" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center" Width="75" Click="button_Click"/>
+
     </Grid>
 </Window>

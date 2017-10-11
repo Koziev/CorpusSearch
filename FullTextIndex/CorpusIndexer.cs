@@ -12,12 +12,42 @@ namespace FullTextIndex
         {
         }
 
-        public void BuildIndex(string index_folder, string corpus_file_path)
+        public void BuildIndex(string index_folder, string corpus_file_path, ICancelIndexation cancellation, IShowIndexationProgress progress )
         {
+            if (string.IsNullOrEmpty(index_folder))
+            {
+                throw new ArgumentException("index_folder");
+            }
+
+            if (string.IsNullOrEmpty(corpus_file_path))
+            {
+                throw new ArgumentException("corpus_file_path");
+            }
+
+            if (!System.IO.File.Exists(corpus_file_path))
+            {
+                throw new ApplicationException($"File {corpus_file_path} does not exists");
+            }
+
+            // Очистим папку с индексной информацией от предыдущего индексирования.
             if (System.IO.Directory.Exists(index_folder))
             {
                 System.IO.Directory.Delete(index_folder, true);
             }
+
+            // Для оценки прогресса индексирования большого файла нам нужно заранее получить число строк в нем,
+            // чем мы сейчас и займемся в лоб.
+            // TODO: для оптимизации можно читать байты блоками и искать \n
+            int total_lines = 0;
+            using (System.IO.StreamReader rdr0 = new System.IO.StreamReader(corpus_file_path))
+            {
+                while(!rdr0.EndOfStream)
+                {
+                    rdr0.ReadLine();
+                    total_lines += 1;
+                }
+            }
+
 
             using (Lucene.Net.Store.Directory luceneIndexDirectory = Lucene.Net.Store.FSDirectory.Open(index_folder))
             {
@@ -28,8 +58,23 @@ namespace FullTextIndex
                 {
                     CorpusFileReader rdr = new CorpusFileReader();
 
+                    int line_counter = 0;
                     foreach (var sampleDataFileRow in rdr.ReadAllLines(corpus_file_path))
                     {
+                        line_counter++;
+
+                        if (cancellation.GetCancellationPending())
+                        {
+                            cancellation.Cancelled = true;
+                            break;
+                        }
+
+                        if( (line_counter%100000)==0 )
+                        {
+                            int percentage = (100 * line_counter) / total_lines;
+                            progress.ShowProgress(percentage);
+                        }
+
                         Lucene.Net.Documents.Document doc = new Lucene.Net.Documents.Document();
 
                         doc.Add(new Lucene.Net.Documents.Field(IndexModel.LineNumber,

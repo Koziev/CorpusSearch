@@ -94,7 +94,9 @@
   <ItemGroup>
     <Compile Include="CorpusIndexer.cs" />
     <Compile Include="CorpusFileReader.cs" />
+    <Compile Include="ICancelIndexation.cs" />
     <Compile Include="IndexModel.cs" />
+    <Compile Include="IShowIndexationProgress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CorpusSample.cs" />
     <Compile Include="SampleHit.cs" />

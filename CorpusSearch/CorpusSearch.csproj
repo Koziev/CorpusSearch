@@ -117,7 +117,10 @@
     <Compile Include="BusyWithIndexing.xaml.cs">
       <DependentUpon>BusyWithIndexing.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CancelIndexationFromWorker.cs" />
     <Compile Include="Corpora_ViewModel.cs" />
+    <Compile Include="IndexationProgressWithWorker.cs" />
+    <Compile Include="Indexation_ViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

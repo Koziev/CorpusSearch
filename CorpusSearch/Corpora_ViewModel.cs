@@ -10,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace CorpusSearch
 {
-    class Corpora_ViewModel
+    class Corpora_ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            if (PropertyChanged != null)
+            var handler = PropertyChanged;
+            if (handler != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -141,8 +142,9 @@ namespace CorpusSearch
             return System.IO.Path.Combine(indexes_folder, corpus.Id.ToString());
         }
 
-        public void ReindexSelectedCorpus()
+        public void ReindexSelectedCorpus(BackgroundWorker worker, Indexation_ViewModel indexation_vm, out bool cancelled)
         {
+            cancelled = false;
             log4net.ILog log = log4net.LogManager.GetLogger(typeof(Corpora_ViewModel));
             if (selected_corpus != null)
             {
@@ -150,10 +152,15 @@ namespace CorpusSearch
                 {
                     log.InfoFormat("Start indexing the corpus id={0} caption={1}", selected_corpus.Id, selected_corpus.Caption);
 
-                    FullTextIndex.CorpusIndexer indexer = new FullTextIndex.CorpusIndexer();
-                    // todo: запускать в фоне
-                    indexer.BuildIndex(GetIndexFolder(selected_corpus), selected_corpus.TxtFilesPath);
+                    indexation_vm.IndexingProgress = "Indexation of "+ selected_corpus.Caption;
 
+                    FullTextIndex.CorpusIndexer indexer = new FullTextIndex.CorpusIndexer();
+
+                    CancelIndexationFromWorker cancellation = new CancelIndexationFromWorker(worker);
+                    IndexationProgressWithWorker progress = new IndexationProgressWithWorker(worker);
+
+                    indexer.BuildIndex(GetIndexFolder(selected_corpus), selected_corpus.TxtFilesPath, cancellation, progress);
+                    cancelled = cancellation.Cancelled;
 
                     using (var db_session = session_factory.OpenSession())
                     {
@@ -166,7 +173,7 @@ namespace CorpusSearch
 
                             log.Info("tx.Commit OK");
 
-                            //PropertyChanged(this, new PropertyChangedEventArgs("CorpusInfos"));
+                            PropertyChanged(this, new PropertyChangedEventArgs("CorpusInfos"));
                         }
                     }
                 }
@@ -175,7 +182,6 @@ namespace CorpusSearch
                     log.Error(ex);
                 }
             }
-
         }
 
         public void DeleteSelectedCorpus()
@@ -246,5 +252,7 @@ namespace CorpusSearch
                 }
             }
         }
+
+
     }
 }

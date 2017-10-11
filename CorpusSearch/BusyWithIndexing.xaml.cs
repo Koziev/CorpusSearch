@@ -19,9 +19,15 @@ namespace CorpusSearch
     /// </summary>
     public partial class BusyWithIndexing : Window
     {
-        public BusyWithIndexing()
+        public BusyWithIndexing(Indexation_ViewModel data_context )
         {
             InitializeComponent();
+            DataContext = data_context;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            ((Indexation_ViewModel)DataContext).AbortIndexationWorker();
         }
     }
 }

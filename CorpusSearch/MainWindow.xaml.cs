@@ -45,6 +45,10 @@ namespace CorpusSearch
 
             indexer_worker.RunWorkerCompleted += indexer_worker_RunWorkerCompleted;
             indexer_worker.DoWork += indexer_worker_DoWork;
+            indexer_worker.ProgressChanged += indexer_worker_ProgressChanged;
+
+            indexer_worker.WorkerSupportsCancellation = true;
+            indexer_worker.WorkerReportsProgress = true;
         }
 
         private void btAddCorpora_Click(object sender, RoutedEventArgs e)
@@ -74,11 +78,17 @@ namespace CorpusSearch
         private BusyWithIndexing busy_with_indexing;
         private void btReindexCorpus_Click(object sender, RoutedEventArgs e)
         {
-            indexer_worker.RunWorkerAsync(DataContext);
-            busy_with_indexing = new BusyWithIndexing();
+            Indexation_ViewModel indexation_vm = new Indexation_ViewModel(indexer_worker);
+
+            indexer_worker.RunWorkerAsync( new Tuple<Corpora_ViewModel, Indexation_ViewModel>((Corpora_ViewModel)DataContext, indexation_vm) );
+
+            busy_with_indexing = new BusyWithIndexing(indexation_vm);
             busy_with_indexing.Owner = this;
             busy_with_indexing.ShowDialog();
         }
+
+
+
 
         private void btSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -88,14 +98,28 @@ namespace CorpusSearch
 
         private void indexer_worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Corpora_ViewModel vm = (Corpora_ViewModel)e.Argument;
-            vm.ReindexSelectedCorpus();
+            Tuple<Corpora_ViewModel, Indexation_ViewModel> view_models = (Tuple<Corpora_ViewModel, Indexation_ViewModel>)e.Argument;
+
+            bool cancelled;
+            view_models.Item1.ReindexSelectedCorpus((BackgroundWorker)sender, view_models.Item2, out cancelled);
+            if (cancelled)
+            {
+                e.Cancel = true;
+            }
         }
 
         private void indexer_worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs args)
         {
             busy_with_indexing.Close();
             busy_with_indexing = null;
+        }
+
+        private void indexer_worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if(busy_with_indexing!=null)
+            {
+                ((Indexation_ViewModel)busy_with_indexing.DataContext).IndexingProgress = string.Format("Indexing, {0}% completed", e.ProgressPercentage );
+            }
         }
 
     }
