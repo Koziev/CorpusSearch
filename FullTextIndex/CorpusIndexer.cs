@@ -71,7 +71,7 @@ namespace FullTextIndex
 
                         if( (line_counter%100000)==0 )
                         {
-                            int percentage = (100 * line_counter) / total_lines;
+                            int percentage = (int)Math.Round( (100.0 * line_counter) / total_lines );
                             progress.ShowProgress(percentage);
                         }
 
