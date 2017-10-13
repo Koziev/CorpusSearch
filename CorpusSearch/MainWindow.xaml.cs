@@ -36,6 +36,7 @@ namespace CorpusSearch
                 var vm = new Corpora_ViewModel();
                 vm.SetIndexesFolder(System.Configuration.ConfigurationManager.AppSettings["indexes"]);
                 vm.ConnectDB(NHibernateHelper.CreateSessionFactory());
+                vm.LoadConfig();
                 DataContext = vm;
             }
             catch (Exception ex)

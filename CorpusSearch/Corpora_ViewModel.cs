@@ -27,9 +27,9 @@ namespace CorpusSearch
 
 
         private string indexes_folder;
-        public void SetIndexesFolder( string path )
+        public void SetIndexesFolder(string path)
         {
-            Contract.Ensures( !string.IsNullOrEmpty(path) );
+            Contract.Ensures(!string.IsNullOrEmpty(path));
             indexes_folder = path;
         }
 
@@ -133,10 +133,11 @@ namespace CorpusSearch
             set
             {
                 selected_corpus_for_searching = value;
+                StoreConfig();
             }
         }
 
-        private string GetIndexFolder( DbObjectMappings.CorpusInfo corpus )
+        private string GetIndexFolder(DbObjectMappings.CorpusInfo corpus)
         {
             Contract.Requires(!string.IsNullOrEmpty(indexes_folder));
             return System.IO.Path.Combine(indexes_folder, corpus.Id.ToString());
@@ -152,7 +153,7 @@ namespace CorpusSearch
                 {
                     log.InfoFormat("Start indexing the corpus id={0} caption={1}", selected_corpus.Id, selected_corpus.Caption);
 
-                    indexation_vm.IndexingProgress = "Indexation of "+ selected_corpus.Caption;
+                    indexation_vm.IndexingProgress = "Indexation of " + selected_corpus.Caption;
 
                     FullTextIndex.CorpusIndexer indexer = new FullTextIndex.CorpusIndexer();
 
@@ -241,18 +242,87 @@ namespace CorpusSearch
 
         public void Search()
         {
-            if( SelectedCorpusForSearching!=null && !string.IsNullOrEmpty(QueryStr) )
+            if (SelectedCorpusForSearching != null && !string.IsNullOrEmpty(QueryStr))
             {
                 search_hits.Clear();
                 FullTextIndex.Searcher searcher = new FullTextIndex.Searcher(GetIndexFolder(SelectedCorpusForSearching));
                 var hits = searcher.Search(QueryStr);
-                foreach( var hit in hits )
+                foreach (var hit in hits)
                 {
                     search_hits.Add(hit);
                 }
             }
         }
 
+
+        private string GetConfigFilePath()
+        {
+            const string CONFIG_FILENAME = "CorpusSearchUserConfig.json";
+            return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), CONFIG_FILENAME);
+        }
+
+
+        private void StoreConfig()
+        {
+            string config_path = GetConfigFilePath();
+
+            log4net.ILog log = log4net.LogManager.GetLogger(typeof(Corpora_ViewModel));
+            log.InfoFormat("Writing config to {0}", config_path);
+
+            try
+            {
+                using (System.IO.StreamWriter wrt = new System.IO.StreamWriter(config_path))
+                {
+                    UserConfig cfg = new UserConfig();
+                    cfg.selected_corpus_id_for_searching = SelectedCorpusForSearching.Id.ToString();
+
+                    string cfg_json = Newtonsoft.Json.JsonConvert.SerializeObject(cfg);
+                    wrt.Write(cfg_json);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.ErrorFormat("Error when writing to config file {0}: {1}", config_path, ex.Message);
+                //ShowErrorAndContinue($"При записи в файл конфигурации {config_path} возникла ошибка: {ex.Message}");
+            }
+
+            return;
+        }
+
+
+        public void LoadConfig()
+        {
+            string config_path = GetConfigFilePath();
+            log4net.ILog log = log4net.LogManager.GetLogger(typeof(Corpora_ViewModel));
+            log.InfoFormat("Reading config from {0}", config_path);
+
+            if (System.IO.File.Exists(config_path))
+            {
+                try
+                {
+                    using (System.IO.StreamReader rdr = new System.IO.StreamReader(config_path))
+                    {
+                        string cfg_json = rdr.ReadToEnd();
+                        UserConfig cfg = Newtonsoft.Json.JsonConvert.DeserializeObject<UserConfig>(cfg_json);
+                        if (!string.IsNullOrEmpty(cfg.selected_corpus_id_for_searching))
+                        {
+                            var selected_corpus = CorpusInfos.Where(z => z.Id.ToString() == cfg.selected_corpus_id_for_searching).FirstOrDefault();
+                            if (selected_corpus != null)
+                            {
+                                SelectedCorpusForSearching = selected_corpus;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.ErrorFormat("Error when reading from config file {0}: {1}", config_path, ex.Message);
+                    //ShowErrorAndContinue($"При чтении из файла конфигурации {config_path} возникла ошибка: {ex.Message}");
+                }
+            }
+
+            return;
+        }
 
     }
 }
