@@ -240,6 +240,22 @@ namespace CorpusSearch
             }
         }
 
+        private string search_hits_html = "<html></html>";
+        public string SearchHitsHtml
+        {
+            get
+            {
+                return search_hits_html;
+            }
+
+            set
+            {
+                search_hits_html = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         public void Search()
         {
             if (SelectedCorpusForSearching != null && !string.IsNullOrEmpty(QueryStr))
@@ -247,10 +263,27 @@ namespace CorpusSearch
                 search_hits.Clear();
                 FullTextIndex.Searcher searcher = new FullTextIndex.Searcher(GetIndexFolder(SelectedCorpusForSearching));
                 var hits = searcher.Search(QueryStr);
+                System.Text.StringBuilder html = new System.Text.StringBuilder();
+
+                html.Append("<html>");
+                html.Append("<head>");
+                html.Append("<meta charset='utf-8'>");
+                html.Append("</head>");
+                html.Append("<body>");
+
                 foreach (var hit in hits)
                 {
                     search_hits.Add(hit);
+
+                    html.Append("<p>");
+                    html.AppendFormat("{0}", hit.html_highlighting);
+                    html.Append("</p>");
                 }
+
+                html.Append("</body>");
+                html.Append("</html>");
+
+                SearchHitsHtml = html.ToString();
             }
         }
 

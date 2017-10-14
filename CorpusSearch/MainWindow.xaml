@@ -6,6 +6,11 @@
         xmlns:local="clr-namespace:CorpusSearch"
         mc:Ignorable="d"
         Title="MainWindow">
+    <Window.Resources>
+        <local:HtmlToFlowDocConverter x:Key="HtmlToFlowDocConverter"/>
+        <local:BrowserBehavior x:Key="BrowserBehavior"/>
+    </Window.Resources>
+
     <Grid>
         <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
             <TabItem Header="Corpora">
@@ -53,14 +58,19 @@
                     </Grid>
 
                     <Grid Grid.Row="2">
-                        <ListView x:Name="lvHits" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" ItemsSource="{Binding SearchHits}">
+                        <!--<ListView x:Name="lvHits" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" ItemsSource="{Binding SearchHits}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn x:Name="Line"  Header="Id" Width="80" DisplayMemberBinding="{Binding line_number}"/>
                                     <GridViewColumn x:Name="Text"  Header="Text" Width="670" DisplayMemberBinding="{Binding sample_text}"/>
                                 </GridView>
                             </ListView.View>
-                        </ListView>
+                        </ListView>-->
+
+                        <!--<FlowDocumentScrollViewer
+   Document="{Binding SearchHitsHtml, Converter={StaticResource HtmlToFlowDocConverter}}"/>-->
+
+                        <WebBrowser local:BrowserBehavior.Html="{Binding SearchHitsHtml}" />
                     </Grid>
                 </Grid>
             </TabItem>
