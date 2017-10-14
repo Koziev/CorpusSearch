@@ -123,5 +123,13 @@ namespace CorpusSearch
             }
         }
 
+        private void tbQuery_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.Enter))
+            {
+                ((Corpora_ViewModel)DataContext).QueryStr = tbQuery.Text;
+                this.btSearch_Click(this, new RoutedEventArgs());
+            }
+        }
     }
 }

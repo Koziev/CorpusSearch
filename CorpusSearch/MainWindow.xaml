@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CorpusSearch"
         mc:Ignorable="d"
-        Title="MainWindow">
+        Title="MainWindow"
+        >
     <Window.Resources>
         <local:HtmlToFlowDocConverter x:Key="HtmlToFlowDocConverter"/>
         <local:BrowserBehavior x:Key="BrowserBehavior"/>
@@ -53,7 +54,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="tbQuery" HorizontalAlignment="Stretch" Height="23" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding QueryStr}" Grid.Column="0"/>
+                        <TextBox x:Name="tbQuery" HorizontalAlignment="Stretch" Height="23" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding QueryStr}" Grid.Column="0" KeyDown="tbQuery_KeyDown"/>
                         <Button x:Name="btSearch" Content="Search" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Width="75" Click="btSearch_Click" Grid.Column="1" IsDefault="True"/>
                     </Grid>
 
