@@ -13,7 +13,7 @@
     </Window.Resources>
 
     <Grid>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem Header="Corpora">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>

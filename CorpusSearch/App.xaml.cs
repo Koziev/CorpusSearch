@@ -17,8 +17,12 @@ namespace CorpusSearch
         {
             log4net.Config.XmlConfigurator.Configure();
 
-            MainWindow mainWindow = new MainWindow();
+            UserConfigManager user_cfg_manager = new UserConfigManager();
+
+            user_cfg_manager.AllowSaving = false;
+            MainWindow mainWindow = new MainWindow(user_cfg_manager);
             mainWindow.Show();
+            user_cfg_manager.AllowSaving = true;
         }
     }
 }

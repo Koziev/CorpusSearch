@@ -21,11 +21,15 @@ namespace CorpusSearch
     /// </summary>
     public partial class MainWindow : Window
     {
+        private UserConfigManager user_config_mahager;
+
         private readonly BackgroundWorker indexer_worker = new BackgroundWorker();
 
 
-        public MainWindow()
+        public MainWindow(UserConfigManager user_config_mahager)
         {
+            this.user_config_mahager = user_config_mahager;
+
             InitializeComponent();
 
             log4net.ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
@@ -33,7 +37,7 @@ namespace CorpusSearch
 
             try
             {
-                var vm = new Corpora_ViewModel();
+                var vm = new Corpora_ViewModel(user_config_mahager);
                 vm.SetIndexesFolder(System.Configuration.ConfigurationManager.AppSettings["indexes"]);
                 vm.ConnectDB(NHibernateHelper.CreateSessionFactory());
                 vm.LoadConfig();

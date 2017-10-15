@@ -12,6 +12,16 @@ namespace CorpusSearch
 {
     class Corpora_ViewModel : INotifyPropertyChanged
     {
+        private UserConfigManager user_config_manager;
+
+        public Corpora_ViewModel(UserConfigManager user_config_manager)
+        {
+            Contract.Ensures(this.user_config_manager != null);
+            this.user_config_manager = user_config_manager;
+        }
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
@@ -22,6 +32,25 @@ namespace CorpusSearch
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+
+        private int selected_tab_index = 0;
+        public int SelectedTabIndex
+        {
+            get
+            {
+                return selected_tab_index;
+            }
+
+            set
+            {
+                selected_tab_index = value;
+                NotifyPropertyChanged();
+                StoreConfig();
+            }
+        }
+
+
 
         private ObservableCollection<DbObjectMappings.CorpusInfo> corpus_infos = new ObservableCollection<DbObjectMappings.CorpusInfo>();
 
@@ -288,36 +317,15 @@ namespace CorpusSearch
         }
 
 
-        private string GetConfigFilePath()
-        {
-            const string CONFIG_FILENAME = "CorpusSearchUserConfig.json";
-            return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), CONFIG_FILENAME);
-        }
-
 
         private void StoreConfig()
         {
-            string config_path = GetConfigFilePath();
+            Contract.Requires(user_config_manager != null);
 
-            log4net.ILog log = log4net.LogManager.GetLogger(typeof(Corpora_ViewModel));
-            log.InfoFormat("Writing config to {0}", config_path);
-
-            try
-            {
-                using (System.IO.StreamWriter wrt = new System.IO.StreamWriter(config_path))
-                {
-                    UserConfig cfg = new UserConfig();
-                    cfg.selected_corpus_id_for_searching = SelectedCorpusForSearching.Id.ToString();
-
-                    string cfg_json = Newtonsoft.Json.JsonConvert.SerializeObject(cfg);
-                    wrt.Write(cfg_json);
-                }
-            }
-            catch (Exception ex)
-            {
-                log.ErrorFormat("Error when writing to config file {0}: {1}", config_path, ex.Message);
-                //ShowErrorAndContinue($"При записи в файл конфигурации {config_path} возникла ошибка: {ex.Message}");
-            }
+            user_config_manager["selected_corpus_id_for_searching"] = SelectedCorpusForSearching.Id.ToString();
+            user_config_manager["selected_tab_index"] = SelectedTabIndex;
+            
+            user_config_manager.Store();
 
             return;
         }
@@ -325,33 +333,19 @@ namespace CorpusSearch
 
         public void LoadConfig()
         {
-            string config_path = GetConfigFilePath();
-            log4net.ILog log = log4net.LogManager.GetLogger(typeof(Corpora_ViewModel));
-            log.InfoFormat("Reading config from {0}", config_path);
+            Contract.Requires(user_config_manager != null);
 
-            if (System.IO.File.Exists(config_path))
+            string selected_corpus_id_for_searching = (string)user_config_manager["selected_corpus_id_for_searching"];
+
+            if (!string.IsNullOrEmpty(selected_corpus_id_for_searching))
             {
-                try
+                var selected_corpus = CorpusInfos.Where(z => z.Id.ToString() == selected_corpus_id_for_searching).FirstOrDefault();
+                if (selected_corpus != null)
                 {
-                    using (System.IO.StreamReader rdr = new System.IO.StreamReader(config_path))
-                    {
-                        string cfg_json = rdr.ReadToEnd();
-                        UserConfig cfg = Newtonsoft.Json.JsonConvert.DeserializeObject<UserConfig>(cfg_json);
-                        if (!string.IsNullOrEmpty(cfg.selected_corpus_id_for_searching))
-                        {
-                            var selected_corpus = CorpusInfos.Where(z => z.Id.ToString() == cfg.selected_corpus_id_for_searching).FirstOrDefault();
-                            if (selected_corpus != null)
-                            {
-                                SelectedCorpusForSearching = selected_corpus;
-                            }
-                        }
-                    }
+                    SelectedCorpusForSearching = selected_corpus;
                 }
-                catch (Exception ex)
-                {
-                    log.ErrorFormat("Error when reading from config file {0}: {1}", config_path, ex.Message);
-                    //ShowErrorAndContinue($"При чтении из файла конфигурации {config_path} возникла ошибка: {ex.Message}");
-                }
+
+                SelectedTabIndex = (int)(long)user_config_manager["selected_tab_index"];
             }
 
             return;

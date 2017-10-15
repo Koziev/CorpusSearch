@@ -105,7 +105,7 @@
     </ApplicationDefinition>
     <Compile Include="BrowserBehaviour.cs" />
     <Compile Include="HtmlToFlowDocConverter.cs" />
-    <Compile Include="UserConfig.cs" />
+    <Compile Include="UserConfigManager.cs" />
     <Page Include="AddCorpusWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
