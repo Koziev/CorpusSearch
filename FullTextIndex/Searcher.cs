@@ -39,7 +39,7 @@ namespace FullTextIndex
 
                     // code highlighting
                     var formatter = new Lucene.Net.Search.Highlight.SimpleHTMLFormatter("<span style=\"background:yellow;\">", "</span>");
-                    var fragmenter = new Lucene.Net.Search.Highlight.SimpleFragmenter(50);
+                    var fragmenter = new Lucene.Net.Search.Highlight.SimpleFragmenter(200);
                     Lucene.Net.Search.Highlight.QueryScorer scorer = new Lucene.Net.Search.Highlight.QueryScorer(query);
                     Lucene.Net.Search.Highlight.Highlighter highlighter = new Lucene.Net.Search.Highlight.Highlighter(formatter, scorer);
                     highlighter.TextFragmenter = fragmenter;
