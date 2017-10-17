@@ -84,7 +84,7 @@ namespace CorpusSearch
         }
 
 
-        public void AddCorpus(string corpus_caption, string txt_files, bool do_index)
+        public void AddCorpus(string corpus_caption, string txt_files, CorpusFormat.CorpusFormatDecriptor corpus_format, bool do_index)
         {
             if (string.IsNullOrEmpty(corpus_caption))
             {
@@ -96,8 +96,13 @@ namespace CorpusSearch
                 throw new ArgumentException("txt_files");
             }
 
+            if( corpus_format==null )
+            {
+                throw new ArgumentNullException("corpus_format");
+            }
+
             log4net.ILog log = log4net.LogManager.GetLogger(typeof(Corpora_ViewModel));
-            log.InfoFormat("{0} corpus_caption={1} txt_files={1} do_index={2}", nameof(AddCorpus), corpus_caption, txt_files, do_index);
+            log.InfoFormat("{0} corpus_caption={1} txt_files={1} format={2} do_index={3}", nameof(AddCorpus), corpus_caption, txt_files, corpus_format, do_index);
 
             //db_session.Clear();
 
@@ -110,6 +115,7 @@ namespace CorpusSearch
                         DbObjectMappings.CorpusInfo new_corpus = new DbObjectMappings.CorpusInfo();
                         new_corpus.Caption = corpus_caption;
                         new_corpus.TxtFilesPath = txt_files;
+                        new_corpus.CorpusFormat = corpus_format.ToJSON();
 
                         db_session.Save(new_corpus);
 
@@ -189,7 +195,11 @@ namespace CorpusSearch
                     CancelIndexationFromWorker cancellation = new CancelIndexationFromWorker(worker);
                     IndexationProgressWithWorker progress = new IndexationProgressWithWorker(worker);
 
-                    indexer.BuildIndex(GetIndexFolder(selected_corpus), selected_corpus.TxtFilesPath, cancellation, progress);
+                    indexer.BuildIndex(GetIndexFolder(selected_corpus),
+                        selected_corpus.TxtFilesPath,
+                        CorpusFormat.CorpusFormatDecriptor.ParseJSON( selected_corpus.CorpusFormat ),
+                        cancellation,
+                        progress);
                     cancelled = cancellation.Cancelled;
 
                     using (var db_session = session_factory.OpenSession())

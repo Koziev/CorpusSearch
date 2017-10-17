@@ -66,7 +66,28 @@ namespace CorpusSearch
                 string txt_files = w.tbtxtFile.Text.Trim();
                 bool do_index = w.chbIndex.IsChecked.Value;
 
-                ((Corpora_ViewModel)DataContext).AddCorpus(corpus_caption, txt_files, do_index);
+                CorpusFormat.CorpusFormatDecriptor format = new CorpusFormat.CorpusFormatDecriptor();
+                if( w.rbSingleFileEOL.IsChecked.Value )
+                {
+                    format.files = CorpusFormat.CorpusFormat_Files.SINGLE_FILE;
+                    format.content = CorpusFormat.CorpusFormat_Content.LINES;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                if( ((KeyValuePair<string,string>)w.cbxEncoding.SelectedValue).Key=="utf-8")
+                {
+                    format.encoding = CorpusFormat.CorpusFormat_Encoding.UTF8;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+
+                ((Corpora_ViewModel)DataContext).AddCorpus(corpus_caption, txt_files, format, do_index);
 
                 if( do_index)
                 {

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CorpusSearch"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="Индексирование и полнотекстовый поиск в корпусе"
         >
     <Window.Resources>
         <local:HtmlToFlowDocConverter x:Key="HtmlToFlowDocConverter"/>

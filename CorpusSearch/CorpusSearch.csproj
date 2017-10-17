@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCorpus_ViewModel.cs" />
     <Compile Include="BrowserBehaviour.cs" />
     <Compile Include="HtmlToFlowDocConverter.cs" />
     <Compile Include="UserConfigManager.cs" />
@@ -167,6 +168,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CorpusFormat\CorpusFormat.csproj">
+      <Project>{52e13544-bbd9-4b6a-9380-6efb474a3538}</Project>
+      <Name>CorpusFormat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DbObjectMappings\DbObjectMappings.csproj">
       <Project>{2c7d49c0-6692-40fd-9f12-ed2e360df478}</Project>
       <Name>DbObjectMappings</Name>

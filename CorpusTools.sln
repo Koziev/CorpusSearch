@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbObjectMappings", "DbObjec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextIndex", "FullTextIndex\FullTextIndex.csproj", "{473A37F8-6DA4-4D7C-8F90-BC58C9040458}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorpusFormat", "CorpusFormat\CorpusFormat.csproj", "{52E13544-BBD9-4B6A-9380-6EFB474A3538}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{473A37F8-6DA4-4D7C-8F90-BC58C9040458}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{473A37F8-6DA4-4D7C-8F90-BC58C9040458}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{473A37F8-6DA4-4D7C-8F90-BC58C9040458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E13544-BBD9-4B6A-9380-6EFB474A3538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E13544-BBD9-4B6A-9380-6EFB474A3538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E13544-BBD9-4B6A-9380-6EFB474A3538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E13544-BBD9-4B6A-9380-6EFB474A3538}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

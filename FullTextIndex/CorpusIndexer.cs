@@ -12,7 +12,10 @@ namespace FullTextIndex
         {
         }
 
-        public void BuildIndex(string index_folder, string corpus_file_path, ICancelIndexation cancellation, IShowIndexationProgress progress )
+        public void BuildIndex(string index_folder,
+            string corpus_file_path,
+            CorpusFormat.CorpusFormatDecriptor corpus_format,
+            ICancelIndexation cancellation, IShowIndexationProgress progress )
         {
             if (string.IsNullOrEmpty(index_folder))
             {
@@ -23,6 +26,9 @@ namespace FullTextIndex
             {
                 throw new ArgumentException("corpus_file_path");
             }
+
+            // todo: добавить учет параметров corpus_format, вероятно через фабрику.
+
 
             if (!System.IO.File.Exists(corpus_file_path))
             {

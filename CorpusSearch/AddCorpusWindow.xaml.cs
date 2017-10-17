@@ -23,6 +23,7 @@ namespace CorpusSearch
         public AddCorpusWindow()
         {
             InitializeComponent();
+            DataContext = new AddCorpus_ViewModel();
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)

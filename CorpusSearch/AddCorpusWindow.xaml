@@ -5,16 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CorpusSearch"
         mc:Ignorable="d"
-        Title="AddCorpusWindow" Height="300" Width="600">
+        Title="Создание нового индекса для корпуса" Height="300" Width="600">
     <Grid Margin="0,0,0,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Label x:Name="label" Content="Наименование" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbCaption" HorizontalAlignment="Left" Height="23" Margin="101,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="483"/>
-        <Label x:Name="label1" Content="Файл(ы) с текстом" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbtxtFile" HorizontalAlignment="Left" Height="23" Margin="101,53,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="449"/>
+        <Label x:Name="label" Content="Наименование:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbCaption" HorizontalAlignment="Left" Height="23" Margin="103,10,0,0" TextWrapping="Wrap" Text="введите наименование корпуса" VerticalAlignment="Top" Width="483"/>
+        <Label x:Name="label1" Content="Файл(ы):" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbtxtFile" HorizontalAlignment="Left" Height="23" Margin="101,53,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="449"/>
         <Button x:Name="btnChooseFile" Content="..." HorizontalAlignment="Left" Margin="555,52,0,0" VerticalAlignment="Top" Width="29" Click="btnChooseFile_Click"/>
-        <CheckBox x:Name="chbIndex" Content="выполнить индексирование сейчас" HorizontalAlignment="Left" Margin="19,116,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnOk" Content="Добавить" HorizontalAlignment="Left" Margin="204,244,0,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="btnOk_Click"/>
-        <Button x:Name="btnCancel" Content="Отмена" HorizontalAlignment="Left" Margin="323,244,0,0" VerticalAlignment="Top" Width="75" IsCancel="True"/>
+        <CheckBox x:Name="chbIndex" Content="выполнить индексирование сейчас" HorizontalAlignment="Left" Margin="10,251,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnOk" Content="Добавить" HorizontalAlignment="Left" Margin="245,244,0,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="btnOk_Click"/>
+        <Button x:Name="btnCancel" Content="Отмена" HorizontalAlignment="Left" Margin="384,244,0,0" VerticalAlignment="Top" Width="75" IsCancel="True"/>
+        <GroupBox x:Name="groupBox" Header="Формат корпуса:" HorizontalAlignment="Left" Margin="10,106,0,0" VerticalAlignment="Top" Width="371" Height="76">
+            <RadioButton x:Name="rbSingleFileEOL" Content="Один текстовый файл, каждая строка индексируется отдельно" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        </GroupBox>
+        <Label x:Name="label2" Content="Кодировка текста:" HorizontalAlignment="Left" Margin="409,111,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cbxEncoding" HorizontalAlignment="Left" Margin="409,134,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" ItemsSource="{Binding Encodings}" DisplayMemberPath="Value">
+        </ComboBox>
 
     </Grid>
 </Window>
